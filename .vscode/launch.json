@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProductsApiApplication<products-api>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "edu.mateusmercon.productsapi.ProductsApiApplication",
+            "projectName": "products-api",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
