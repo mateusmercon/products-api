@@ -22,7 +22,7 @@ public class ProductModel implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idProduct;
     private String name;
-    private BigDecimal value;
+    private BigDecimal price;
 
     public UUID getIdProduct() {
         return idProduct;
@@ -40,11 +40,11 @@ public class ProductModel implements Serializable{
         this.name = name;
     }
 
-    public BigDecimal getValue() {
-        return value;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setValue(BigDecimal value) {
-        this.value = value;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
