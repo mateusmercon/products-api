@@ -18,13 +18,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
-public class ProducController {
+public class ProductController {
     @Autowired
     ProductRepository productRepository;
 
@@ -39,7 +44,17 @@ public class ProducController {
 
     @GetMapping("/products")
      public ResponseEntity<List<ProductModel>> getAllProducts(){
-        return ResponseEntity.status(HttpStatus.OK).body(productRepository.findAll());
+        List<ProductModel> productsList = productRepository.findAll();
+
+        if (!productsList.isEmpty()) {
+            for (ProductModel product : productsList) {
+                UUID id = product.getIdProduct();
+                product.add(linkTo(methodOn(ProductController.class).getOneProduct(id)).withSelfRel());
+            }
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(productsList);
     }
 
      @GetMapping("/products/{id}")
@@ -49,6 +64,8 @@ public class ProducController {
         if(productOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
         }
+
+        productOptional.get().add(linkTo(methodOn(ProductController.class).getAllProducts()).withSelfRel());
 
         return ResponseEntity.status(HttpStatus.OK).body(productOptional.get());
     }
